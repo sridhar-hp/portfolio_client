@@ -72,3 +72,71 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+:root {
+  --content-width: 1180px;
+  --page-gutter: clamp(1.25rem, 4vw, 4rem);
+  --section-space: clamp(5rem, 9vw, 8rem);
+}
+
+.container {
+  width: min(var(--content-width), calc(100% - (var(--page-gutter) * 2)));
+  margin-inline: auto;
+}
+
+.section-header { max-width: 42rem; }
+.section-label {
+  display: inline-flex;
+  margin-bottom: 1rem;
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.section-title {
+  margin-bottom: 0.75rem;
+  color: var(--color-text);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 750;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.section-desc { color: var(--color-text-muted); line-height: 1.7; }
+
+section:not(:first-child) { padding-block: var(--section-space); }
+.grid-2, .grid-3 { display: grid; gap: 1rem; }
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.card {
+  min-height: 100%;
+  padding: clamp(1.25rem, 2vw, 1.75rem);
+  border: 1px solid var(--color-border);
+  border-radius: 0.9rem;
+  background: linear-gradient(145deg, rgba(26, 29, 33, 0.82), rgba(18, 20, 23, 0.94));
+}
+
+.hero-section { min-height: min(52rem, 100vh); }
+.hero-floating-card { min-width: 12.5rem; }
+.hero-card-top { top: 8%; right: -3.5rem; }
+.hero-card-side { top: 47%; left: -4rem; }
+.hero-card-bottom { right: 5%; bottom: 7%; }
+
+@media (max-width: 1023px) {
+  .hero-card-top { right: -1rem; }
+  .hero-card-side { left: -1rem; }
+}
+
+@media (max-width: 639px) {
+  .hero-section { min-height: auto; }
+  .hero-floating-card { min-width: 0; padding: 0.65rem; }
+  .hero-card-top { top: 5%; right: -0.25rem; }
+  .hero-card-side { top: auto; left: -0.25rem; bottom: 21%; }
+  .hero-card-bottom { right: 0.75rem; bottom: 4%; }
+}
+
+@media (max-width: 767px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .section-header { margin-bottom: 2.5rem !important; }
+}
