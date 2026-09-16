@@ -55,7 +55,7 @@ export default function Navbar() {
               <span className="text-accent">.</span>
             </motion.a>
 
-            <div className="hidden md:flex items-center gap-0.5 relative z-10">
+            <div className="hidden md:flex items-center gap-8 relative z-10">
               {navLinks.map((link) => (
                 <motion.a
                   key={link.label}

@@ -103,6 +103,18 @@ body::before {
 .timeline-progress ~ .space-y-10 > div > div:first-of-type { box-shadow: 0 0 18px rgba(110,231,183,.2); }
 .hero-section { isolation: isolate; }
 .hero-section::after { content: ''; position: absolute; width: 30rem; height: 30rem; top: 10%; left: 22%; border-radius: 50%; background: radial-gradient(circle, rgba(110,231,183,.09), transparent 68%); filter: blur(18px); pointer-events: none; animation: hero-breathe 8s ease-in-out infinite; }
+.hero-core { position: absolute; width: min(65%, 24rem); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at center, rgba(110,231,183,.16), rgba(125,211,252,.05) 32%, transparent 68%); filter: drop-shadow(0 0 2rem rgba(110,231,183,.12)); }
+.hero-core-ring, .hero-core-orbit { position: absolute; inset: 12%; border: 1px solid rgba(110,231,183,.22); border-radius: 50%; transform: rotateX(65deg) rotateZ(18deg); }
+.hero-core-ring-one { animation: core-spin 18s linear infinite; }
+.hero-core-ring-two { inset: 22%; border-color: rgba(125,211,252,.25); transform: rotateY(65deg) rotateZ(-22deg); animation: core-spin-reverse 14s linear infinite; }
+.hero-core-orbit { inset: 2%; border-style: dashed; border-color: rgba(125,211,252,.18); transform: rotateX(70deg) rotateZ(-35deg); animation: core-spin 24s linear infinite; }
+.hero-core-orbit-two { inset: 28%; border-color: rgba(110,231,183,.3); transform: rotateY(70deg) rotateZ(45deg); animation: core-spin-reverse 20s linear infinite; }
+.hero-core-node { position: absolute; width: .42rem; height: .42rem; border-radius: 50%; background: var(--color-accent); box-shadow: 0 0 1rem rgba(110,231,183,.65); }
+.hero-core-node-one { top: 10%; left: 42%; }
+.hero-core-node-two { right: 15%; bottom: 27%; background: var(--color-accent-secondary); box-shadow: 0 0 1rem rgba(125,211,252,.65); }
+.hero-core-node-three { bottom: 14%; left: 25%; }
+@keyframes core-spin { to { transform: rotateX(65deg) rotateZ(378deg); } }
+@keyframes core-spin-reverse { to { transform: rotateY(65deg) rotateZ(-382deg); } }
 @keyframes hero-breathe { 0%, 100% { opacity: .45; transform: scale(.96); } 50% { opacity: .8; transform: scale(1.04); } }
 @keyframes section-settle { from { opacity: .72; transform: translateY(10px) perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)); } to { opacity: 1; transform: translateY(0) perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)); } }
 
@@ -162,9 +174,26 @@ section:not(:first-child) { padding-block: var(--section-space); }
 
 .hero-section { min-height: min(52rem, 100vh); }
 .hero-floating-card { min-width: 12.5rem; }
+.hero-floating-card { border-color: rgba(255,255,255,.09); background: rgba(18,20,23,.72); box-shadow: 0 1rem 3rem rgba(0,0,0,.22), inset 0 1px rgba(255,255,255,.05); animation: card-float 7s ease-in-out infinite; }
+.hero-floating-card:nth-of-type(2n) { animation-delay: -2s; animation-duration: 8.5s; }
+.hero-floating-card:nth-of-type(3n) { animation-delay: -4s; animation-duration: 9.5s; }
 .hero-card-top { top: 8%; right: -3.5rem; }
 .hero-card-side { top: 47%; left: -4rem; }
 .hero-card-bottom { right: 5%; bottom: 7%; }
+.hero-card-stack { top: 25%; left: -5.5rem; }
+.hero-card-data { right: -4.5rem; bottom: 28%; }
+@keyframes card-float { 0%, 100% { transform: translate3d(0, 0, 0); } 50% { transform: translate3d(0, -7px, 0); } }
+
+section:not(:first-child)[class*="py-24"] { padding-block: clamp(6rem, 11vw, 9rem); }
+.nav-glow { box-shadow: 0 0 1.5rem rgba(110,231,183,.1); }
+.card:hover { box-shadow: 0 1.25rem 3rem rgba(0,0,0,.2), 0 0 0 1px rgba(110,231,183,.06); }
+.project-featured .project-media { aspect-ratio: 16 / 8; }
+.project-featured { background: linear-gradient(145deg, rgba(26, 29, 33, 0.9), rgba(18, 20, 23, 0.96)); }
+.contact-section .section-header { max-width: 48rem; }
+.contact-grid { justify-items: stretch; }
+.contact-grid .card { text-align: center; }
+.contact-grid .card > div { justify-content: center; text-align: left; }
+.contact-grid .card:first-child > div { justify-content: center; }
 
 @media (max-width: 1023px) {
   .hero-card-top { right: -1rem; }
@@ -182,6 +211,9 @@ section:not(:first-child) { padding-block: var(--section-space); }
 @media (max-width: 767px) {
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
   .section-header { margin-bottom: 2.5rem !important; }
+  #achievements .space-y-10 > div { display: flex !important; flex-direction: column !important; width: 100%; box-sizing: border-box; padding-left: 3.5rem; }
+  #achievements .space-y-10 > div .card { width: auto; }
+  #achievements .space-y-10 { overflow-x: hidden; }
 }
 
 @media (prefers-reduced-motion: reduce) {

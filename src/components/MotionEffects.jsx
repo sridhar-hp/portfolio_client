@@ -41,6 +41,24 @@ export function usePointerGlow() {
   }, [])
 }
 
+export function useCountUp(target, duration = 900) {
+  const [value, setValue] = useState(0)
+
+  useEffect(() => {
+    const start = performance.now()
+    let frame = 0
+    const update = (now) => {
+      const progress = Math.min((now - start) / duration, 1)
+      setValue(Math.round(target * (1 - Math.pow(1 - progress, 3))))
+      if (progress < 1) frame = requestAnimationFrame(update)
+    }
+    frame = requestAnimationFrame(update)
+    return () => cancelAnimationFrame(frame)
+  }, [duration, target])
+
+  return value
+}
+
 export function useTilt() {
   const ref = useRef(null)
   const reduceMotion = useReducedMotion()

@@ -1,12 +1,14 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowRight, Check, Download, MapPin, Sparkles } from 'lucide-react'
 import heroMark from '../assets/hero.png'
-import { MagneticButton } from './MotionEffects'
+import { MagneticButton, useCountUp } from './MotionEffects'
 
 const floatingCards = [
   { label: 'Current focus', value: 'AI product systems', icon: Sparkles, className: 'hero-card-top' },
   { label: 'Based in', value: 'Chennai, India', icon: MapPin, className: 'hero-card-side' },
   { label: 'Available for', value: 'Full-time roles', icon: Check, className: 'hero-card-bottom' },
+  { label: 'Core stack', value: 'React + Node.js', icon: Sparkles, className: 'hero-card-stack' },
+  { label: 'Data layer', value: 'PostgreSQL', icon: Check, className: 'hero-card-data' },
 ]
 
 const techPills = ['React', 'Node.js', 'TypeScript', 'AI / ML', 'PostgreSQL']
@@ -24,6 +26,8 @@ const itemVariants = {
 export default function Hero() {
   const { scrollY } = useScroll()
   const imageY = useTransform(scrollY, [0, 700], [0, 70])
+  const projectsShipped = useCountUp(5)
+  const certifications = useCountUp(3)
 
   return (
     <section className="hero-section relative overflow-hidden pt-24 lg:pt-28">
@@ -49,8 +53,8 @@ export default function Hero() {
             </motion.a>
           </motion.div>
           <motion.div variants={itemVariants} className="mt-12 grid max-w-lg grid-cols-3 border-y border-border py-4">
-            <div><strong className="block text-xl text-text">05+</strong><span className="text-xs text-text-muted">Projects shipped</span></div>
-            <div><strong className="block text-xl text-text">03</strong><span className="text-xs text-text-muted">Certifications</span></div>
+            <div><strong className="block text-xl text-text">{String(projectsShipped).padStart(2, '0')}+</strong><span className="text-xs text-text-muted">Projects shipped</span></div>
+            <div><strong className="block text-xl text-text">{String(certifications).padStart(2, '0')}</strong><span className="text-xs text-text-muted">Certifications</span></div>
             <div><strong className="block text-xl text-text">∞</strong><span className="text-xs text-text-muted">Always learning</span></div>
           </motion.div>
           <motion.div variants={itemVariants} className="mt-6 flex flex-wrap gap-2">
@@ -62,6 +66,15 @@ export default function Hero() {
           <motion.div style={{ y: imageY }} className="relative aspect-[0.92] overflow-visible border border-border bg-surface p-3 sm:p-5">
             <div className="relative flex h-full items-center justify-center overflow-hidden border border-border-light bg-bg">
               <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(110,231,183,0.08),transparent_35%,rgba(125,211,252,0.04))]" />
+              <div className="hero-core" aria-hidden="true">
+                <span className="hero-core-ring hero-core-ring-one" />
+                <span className="hero-core-ring hero-core-ring-two" />
+                <span className="hero-core-orbit hero-core-orbit-one" />
+                <span className="hero-core-orbit hero-core-orbit-two" />
+                <span className="hero-core-node hero-core-node-one" />
+                <span className="hero-core-node hero-core-node-two" />
+                <span className="hero-core-node hero-core-node-three" />
+              </div>
               <img src={heroMark} alt="Sridhar profile mark" className="relative z-10 w-[58%] max-w-[18rem] object-contain opacity-90" />
               <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between border-t border-border pt-4">
                 <div><p className="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-accent">Sridhar</p><p className="mt-1 text-sm text-text-muted">Building for what is next</p></div>

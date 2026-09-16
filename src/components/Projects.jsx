@@ -63,8 +63,7 @@ export default function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-80px' }}
               transition={{ delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ y: -6, transition: { duration: 0.35 } }}
-              className="card gradient-border h-full flex flex-col overflow-hidden group"
+              className={`card gradient-border h-full flex flex-col overflow-hidden group ${i === 0 ? 'project-featured lg:col-span-2' : ''}`}
             >
               {/* Image area */}
               <div className="project-media relative aspect-[4/3] -mx-6 -my-6 mx-6 my-6 mb-6 rounded-xl bg-bg border border-border overflow-hidden">

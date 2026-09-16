@@ -12,7 +12,7 @@ const contactLinks = [
 
 export default function Contact() {
   return (
-    <section id="contact" className="py-24 lg:py-32">
+    <section id="contact" className="contact-section py-24 lg:py-32">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -34,7 +34,7 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ delay: 0.15, duration: 0.6 }}
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto"
+          className="contact-grid grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto"
         >
           {contactLinks.map((link, i) => (
             <motion.a
