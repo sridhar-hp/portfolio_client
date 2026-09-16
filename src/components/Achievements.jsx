@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { useRef } from 'react'
 import { Award, Trophy, GraduationCap, Star, Zap, TrendingUp } from 'lucide-react'
 
 const achievements = [
@@ -11,6 +12,10 @@ const achievements = [
 ]
 
 export default function Achievements() {
+  const timelineRef = useRef(null)
+  const { scrollYProgress } = useScroll({ target: timelineRef, offset: ['start 75%', 'end 55%'] })
+  const progressScale = useTransform(scrollYProgress, [0, 1], [0, 1])
+
   return (
     <section id="achievements" className="py-24 lg:py-32">
       <div className="container">
@@ -26,8 +31,9 @@ export default function Achievements() {
           <p className="section-desc">Key moments that define my journey as a developer.</p>
         </motion.div>
 
-        <div className="relative">
+        <div ref={timelineRef} className="relative">
           <div className="absolute left-5 lg:left-1/2 lg:-translate-x-[1px] top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-border to-transparent" />
+          <motion.div style={{ scaleY: progressScale }} className="timeline-progress absolute left-5 lg:left-1/2 lg:-translate-x-[1px] top-0 bottom-0 w-[2px] origin-top bg-gradient-to-b from-accent via-accent-secondary to-transparent" />
 
           <div className="space-y-10 lg:space-y-12">
             {achievements.map((item, i) => (

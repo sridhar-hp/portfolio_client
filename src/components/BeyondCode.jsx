@@ -35,7 +35,7 @@ export default function BeyondCode() {
               viewport={{ once: true, margin: '-50px' }}
               transition={{ delay: i * 0.06, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
               whileHover={{ y: -4, transition: { duration: 0.3 } }}
-              className="card gradient-border h-full flex flex-col"
+              className="card gradient-border group h-full flex flex-col"
             >
               <div className={`inline-flex p-3 rounded-xl bg-bg ${item.accent} ${item.bg} mb-5 transition-transform duration-400 group-hover:scale-110`}>
                 <item.icon size={20} strokeWidth={1.5} />

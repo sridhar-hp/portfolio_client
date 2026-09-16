@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
-import { ExternalLink, ArrowUpRight, Star, Shield, Zap, Code2 } from 'lucide-react'
+import { ExternalLink, ArrowUpRight, Code2 } from 'lucide-react'
 import { GithubIcon } from './icons'
+import { useTilt } from './MotionEffects'
 
 const projects = [
   {
@@ -56,7 +57,7 @@ export default function Projects() {
 
         <div className="grid-3 lg:grid-cols-3">
           {projects.map((project, i) => (
-            <motion.div
+            <ProjectCard
               key={project.title}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -66,8 +67,9 @@ export default function Projects() {
               className="card gradient-border h-full flex flex-col overflow-hidden group"
             >
               {/* Image area */}
-              <div className="relative aspect-[4/3] -mx-6 -my-6 mx-6 my-6 mb-6 rounded-xl bg-bg border border-border overflow-hidden">
+              <div className="project-media relative aspect-[4/3] -mx-6 -my-6 mx-6 my-6 mb-6 rounded-xl bg-bg border border-border overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/20" />
+                <div className="project-shine absolute inset-0 z-10 pointer-events-none" />
                 <div className="absolute top-3 left-3 flex gap-1.5">
                   <div className="w-2.5 h-2.5 rounded-full bg-border-light" />
                   <div className="w-2.5 h-2.5 rounded-full bg-border-light" />
@@ -143,10 +145,15 @@ export default function Projects() {
                   </motion.a>
                 </div>
               </div>
-            </motion.div>
+            </ProjectCard>
           ))}
         </div>
       </div>
     </section>
   )
+}
+
+function ProjectCard({ children, ...props }) {
+  const tiltRef = useTilt()
+  return <motion.div ref={tiltRef} {...props}>{children}</motion.div>
 }

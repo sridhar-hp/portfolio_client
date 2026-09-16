@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowRight, Check, Download, MapPin, Sparkles } from 'lucide-react'
 import heroMark from '../assets/hero.png'
+import { MagneticButton } from './MotionEffects'
 
 const floatingCards = [
   { label: 'Current focus', value: 'AI product systems', icon: Sparkles, className: 'hero-card-top' },
@@ -40,9 +41,9 @@ export default function Hero() {
             I build intelligent, dependable software for teams that care about clarity, speed, and the details users feel.
           </motion.p>
           <motion.div variants={itemVariants} className="mt-9 flex flex-wrap gap-3">
-            <motion.a href="#projects" whileHover={{ y: -3 }} whileTap={{ scale: 0.98 }} className="group inline-flex items-center gap-2 bg-accent px-5 py-3 text-sm font-bold text-bg transition-transform">
+            <MagneticButton href="#projects" whileHover={{ y: -3 }} whileTap={{ scale: 0.98 }} className="group inline-flex items-center gap-2 bg-accent px-5 py-3 text-sm font-bold text-bg transition-transform">
               View selected work <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
-            </motion.a>
+            </MagneticButton>
             <motion.a href="#" whileHover={{ y: -3 }} whileTap={{ scale: 0.98 }} className="inline-flex items-center gap-2 border border-border bg-surface px-5 py-3 text-sm font-semibold text-text transition-transform hover:border-border-light">
               <Download size={16} /> Download resume
             </motion.a>

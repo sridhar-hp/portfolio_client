@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Mail, MessageCircle, FileText, ArrowUpRight, Send } from 'lucide-react'
+import { Mail, FileText, ArrowUpRight, Send } from 'lucide-react'
 import { LinkedinIcon, GithubIcon } from './icons'
 
 const contactLinks = [

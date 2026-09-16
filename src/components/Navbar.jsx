@@ -13,6 +13,7 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('')
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -21,6 +22,16 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => { document.body.style.overflow = mobileOpen ? 'hidden' : '' }, [mobileOpen])
+
+  useEffect(() => {
+    const sections = navLinks.map(({ href }) => document.querySelector(href)).filter(Boolean)
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+      if (visible) setActiveSection(`#${visible.target.id}`)
+    }, { rootMargin: '-30% 0px -55% 0px', threshold: [0, 0.2, 0.5, 1] })
+    sections.forEach((section) => observer.observe(section))
+    return () => observer.disconnect()
+  }, [])
 
   return (
     <>
@@ -50,10 +61,10 @@ export default function Navbar() {
                   key={link.label}
                   href={link.href}
                   whileHover={{ y: -1 }}
-                  className="relative px-4 py-2.5 text-sm font-medium text-text-muted hover:text-text transition-colors duration-300 rounded-lg"
+                  className={`group relative px-4 py-2.5 text-sm font-medium transition-colors duration-300 rounded-lg ${activeSection === link.href ? 'text-text' : 'text-text-muted hover:text-text'}`}
                 >
                   {link.label}
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-px bg-accent group-hover:w-3/4 transition-all duration-300" />
+                  <span className={`absolute bottom-0 left-1/2 h-px -translate-x-1/2 bg-accent transition-all duration-300 ${activeSection === link.href ? 'w-3/4' : 'w-0 group-hover:w-3/4'}`} />
                 </motion.a>
               ))}
               <motion.a

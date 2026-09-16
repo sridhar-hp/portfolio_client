@@ -7,12 +7,18 @@ import Achievements from './components/Achievements'
 import BeyondCode from './components/BeyondCode'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import { AmbientBackground, CursorGlow, usePointerGlow, useSectionObserver } from './components/MotionEffects'
 
 export default function App() {
+  useSectionObserver()
+  usePointerGlow()
+
   return (
-    <div className="min-h-screen bg-bg">
+    <div className="min-h-screen bg-bg relative">
+      <AmbientBackground />
+      <CursorGlow />
       <Navbar />
-      <main>
+      <main className="relative z-10">
         <Hero />
         <About />
         <Skills />
