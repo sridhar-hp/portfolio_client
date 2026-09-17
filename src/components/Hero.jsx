@@ -1,17 +1,9 @@
 import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion'
-import { ArrowRight, Check, Download } from 'lucide-react'
+import { ArrowRight, Download } from 'lucide-react'
 import { MagneticButton, useCountUp } from './MotionEffects'
 
 const techPills = ['React', 'Node.js', 'TypeScript', 'AI / ML', 'PostgreSQL']
-const orbitTech = [
-  { label: 'React', mark: 'R', className: 'hero-tech-react' },
-  { label: 'Node.js', mark: 'JS', className: 'hero-tech-node' },
-  { label: 'MongoDB', mark: 'DB', className: 'hero-tech-mongo' },
-  { label: 'GitHub', mark: 'GH', className: 'hero-tech-github' },
-  { label: 'Express.js', mark: 'EX', className: 'hero-tech-express' },
-]
-
-const codeSnippets = ['const app = express()', 'useState()', 'mongoose.connect()']
+const codeLines = ['const app = express()', 'app.listen(3000)', 'const data = await db.find()']
 const heatmap = Array.from({ length: 48 }, (_, index) => (index * 7 + 3) % 5)
 
 const contentVariants = {
@@ -85,35 +77,32 @@ export default function Hero() {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, x: 34 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.28, duration: 0.8, ease: [0.22, 1, 0.36, 1] }} className="relative mx-auto w-full max-w-136 lg:mr-0">
-          <motion.div style={{ y: imageY }} className="relative aspect-[0.92] overflow-visible border border-border bg-surface p-3 sm:p-5">
+          <motion.div style={{ y: imageY }} className="relative aspect-[0.92] overflow-visible">
             <motion.div
-              className="hero-workspace relative flex h-full items-center justify-center overflow-hidden border border-border-light bg-bg"
+              className="hero-workspace relative flex h-full items-center justify-center"
               onPointerMove={handleVisualPointerMove}
               onPointerLeave={resetVisualPointer}
               style={{ x: visualX, y: visualY, rotateX, rotateY, transformPerspective: 900 }}
             >
-              <div className="hero-workspace-grid" />
-              <motion.div className="hero-ai-core" animate={reduceMotion ? undefined : { scale: [1, 1.04, 1] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}>
-                <span className="hero-core-halo" />
-                <span className="hero-core-ring hero-core-ring-one" />
-                <span className="hero-core-ring hero-core-ring-two" />
-                <span className="hero-core-label">AI<br /><small>CORE</small></span>
+              <motion.div className="hero-scene" animate={reduceMotion ? undefined : { y: [0, -4, 0] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}>
+                <div className="hero-monitor-glow" />
+                <div className="hero-monitor">
+                  <div className="hero-monitor-topbar"><span /><span /><span /><small>workspace / api-server.js</small></div>
+                  <div className="hero-code-editor"><div className="hero-code-gutter">01<br />02<br />03<br />04<br />05</div><div className="hero-code-lines">{codeLines.map((line, index) => <motion.code key={line} initial={{ opacity: 0, width: 0 }} animate={{ opacity: 1, width: '100%' }} transition={{ delay: 1 + index * .35, duration: .7 }}><em>{index + 1}</em>{line}<i className={index === 2 ? 'hero-cursor' : ''} /></motion.code>)}</div></div>
+                  <div className="hero-monitor-status"><span className="hero-status-dot" /> API online <span>main / 99.9%</span></div>
+                </div>
+                <div className="hero-monitor-stand" />
+                <div className="hero-desk"><div className="hero-keyboard"><span /><span /><span /><span /><span /><span /><span /><span /><span /><span /><span /><span /></div><div className="hero-mouse" /><div className="hero-mug" /><div className="hero-plant"><i /><i /><i /></div></div>
+                <div className="hero-cpu"><span /><span /><span /></div>
+                <div className="hero-developer"><div className="hero-developer-head"><span className="hero-developer-hair" /></div><div className="hero-developer-body"><span className="hero-developer-arm" /><span className="hero-developer-arm hero-developer-arm-two" /></div><div className="hero-developer-chair" /></div>
               </motion.div>
-
-              <motion.div className="hero-orbit hero-orbit-one" animate={reduceMotion ? undefined : { rotate: 360 }} transition={{ duration: 26, repeat: Infinity, ease: 'linear' }}>
-                {orbitTech.slice(0, 3).map((tech) => <TechNode key={tech.label} tech={tech} />)}
-              </motion.div>
-              <motion.div className="hero-orbit hero-orbit-two" animate={reduceMotion ? undefined : { rotate: -360 }} transition={{ duration: 34, repeat: Infinity, ease: 'linear' }}>
-                {orbitTech.slice(3).map((tech) => <TechNode key={tech.label} tech={tech} />)}
-              </motion.div>
-
-              <div className="hero-code hero-code-one"><code>{codeSnippets[0]}</code></div>
-              <div className="hero-code hero-code-two"><code>{codeSnippets[1]}</code></div>
-              <div className="hero-code hero-code-three"><code>{codeSnippets[2]}</code></div>
-              <div className="hero-heatmap" aria-label="GitHub contribution activity">
-                <span className="hero-heatmap-label">GITHUB / ACTIVITY</span>
-                <div className="hero-heatmap-grid">{heatmap.map((level, index) => <i key={index} className={`heat-${level}`} />)}</div>
-              </div>
+              <div className="hero-connection hero-connection-react" /><div className="hero-connection hero-connection-node" /><div className="hero-connection hero-connection-mongo" /><div className="hero-connection hero-connection-github" /><div className="hero-connection hero-connection-typescript" />
+              <WorkspacePanel className="hero-panel-github" title="GitHub activity"><div className="hero-panel-metric">+24 <small>commits this week</small></div><div className="hero-heatmap-grid">{heatmap.map((level, index) => <i key={index} className={`heat-${level}`} />)}</div></WorkspacePanel>
+              <WorkspacePanel className="hero-panel-react" title="React.js"><span className="hero-panel-symbol">R</span><small>components / state</small></WorkspacePanel>
+              <WorkspacePanel className="hero-panel-node" title="Node.js"><span className="hero-panel-pulse" /><small>api / express</small></WorkspacePanel>
+              <WorkspacePanel className="hero-panel-mongo" title="MongoDB"><span className="hero-panel-database">DB</span><small>user_profiles</small></WorkspacePanel>
+              <WorkspacePanel className="hero-panel-typescript" title="TypeScript"><span className="hero-panel-symbol">TS</span><small>typed interfaces</small></WorkspacePanel>
+              <div className="hero-build-note">BUILD<br />LEARN<br />IMPROVE<br />REPEAT</div>
               {!reduceMotion && Array.from({ length: 8 }, (_, index) => (
                 <motion.span
                   key={index}
@@ -123,19 +112,14 @@ export default function Hero() {
                   transition={{ duration: 4 + index * 0.45, delay: index * 0.18, repeat: Infinity, ease: 'easeInOut' }}
                 />
               ))}
-              <div className="absolute left-5 top-5 h-10 w-10 border-l border-t border-accent/60" />
-              <div className="absolute bottom-5 right-5 h-10 w-10 border-b border-r border-accent-secondary/50" />
             </motion.div>
           </motion.div>
-          <motion.div className="hero-identity-card hero-identity-one" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.72, duration: 0.5 }}>AI Full Stack Developer</motion.div>
-          <motion.div className="hero-identity-card hero-identity-two" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.84, duration: 0.5 }}>Building Real Products</motion.div>
-          <motion.div className="hero-identity-card hero-identity-three" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.96, duration: 0.5 }}><Check size={14} /> Open To Opportunities</motion.div>
         </motion.div>
       </div>
     </section>
   )
 }
 
-function TechNode({ tech }) {
-  return <div className={`hero-tech-node ${tech.className}`}><span>{tech.mark}</span><small>{tech.label}</small></div>
+function WorkspacePanel({ className, title, children }) {
+  return <motion.div className={`hero-workspace-panel ${className}`} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .8, duration: .55 }}>{title && <span className="hero-panel-title">{title}</span>}{children}</motion.div>
 }
