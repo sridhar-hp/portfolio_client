@@ -1,17 +1,18 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowRight, Check, Download, MapPin, Sparkles } from 'lucide-react'
-import heroMark from '../assets/hero.png'
+import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion'
+import { ArrowRight, Check, Download } from 'lucide-react'
 import { MagneticButton, useCountUp } from './MotionEffects'
 
-const floatingCards = [
-  { label: 'Current focus', value: 'AI product systems', icon: Sparkles, className: 'hero-card-top' },
-  { label: 'Based in', value: 'Chennai, India', icon: MapPin, className: 'hero-card-side' },
-  { label: 'Available for', value: 'Full-time roles', icon: Check, className: 'hero-card-bottom' },
-  { label: 'Core stack', value: 'React + Node.js', icon: Sparkles, className: 'hero-card-stack' },
-  { label: 'Data layer', value: 'PostgreSQL', icon: Check, className: 'hero-card-data' },
+const techPills = ['React', 'Node.js', 'TypeScript', 'AI / ML', 'PostgreSQL']
+const orbitTech = [
+  { label: 'React', mark: 'R', className: 'hero-tech-react' },
+  { label: 'Node.js', mark: 'JS', className: 'hero-tech-node' },
+  { label: 'MongoDB', mark: 'DB', className: 'hero-tech-mongo' },
+  { label: 'GitHub', mark: 'GH', className: 'hero-tech-github' },
+  { label: 'Express.js', mark: 'EX', className: 'hero-tech-express' },
 ]
 
-const techPills = ['React', 'Node.js', 'TypeScript', 'AI / ML', 'PostgreSQL']
+const codeSnippets = ['const app = express()', 'useState()', 'mongoose.connect()']
+const heatmap = Array.from({ length: 48 }, (_, index) => (index * 7 + 3) % 5)
 
 const contentVariants = {
   hidden: {},
@@ -28,6 +29,27 @@ export default function Hero() {
   const imageY = useTransform(scrollY, [0, 700], [0, 70])
   const projectsShipped = useCountUp(5)
   const certifications = useCountUp(3)
+  const reduceMotion = useReducedMotion()
+  const pointerX = useMotionValue(0)
+  const pointerY = useMotionValue(0)
+  const smoothX = useSpring(pointerX, { stiffness: 120, damping: 22, mass: 0.35 })
+  const smoothY = useSpring(pointerY, { stiffness: 120, damping: 22, mass: 0.35 })
+  const visualX = useTransform(smoothX, [-1, 1], [-12, 12])
+  const visualY = useTransform(smoothY, [-1, 1], [-10, 10])
+  const rotateX = useTransform(smoothY, [-1, 1], [4, -4])
+  const rotateY = useTransform(smoothX, [-1, 1], [-5, 5])
+
+  const handleVisualPointerMove = (event) => {
+    if (reduceMotion) return
+    const bounds = event.currentTarget.getBoundingClientRect()
+    pointerX.set((event.clientX - bounds.left) / bounds.width * 2 - 1)
+    pointerY.set((event.clientY - bounds.top) / bounds.height * 2 - 1)
+  }
+
+  const resetVisualPointer = () => {
+    pointerX.set(0)
+    pointerY.set(0)
+  }
 
   return (
     <section className="hero-section relative overflow-hidden pt-24 lg:pt-28">
@@ -64,33 +86,56 @@ export default function Hero() {
 
         <motion.div initial={{ opacity: 0, x: 34 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.28, duration: 0.8, ease: [0.22, 1, 0.36, 1] }} className="relative mx-auto w-full max-w-136 lg:mr-0">
           <motion.div style={{ y: imageY }} className="relative aspect-[0.92] overflow-visible border border-border bg-surface p-3 sm:p-5">
-            <div className="relative flex h-full items-center justify-center overflow-hidden border border-border-light bg-bg">
-              <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(110,231,183,0.08),transparent_35%,rgba(125,211,252,0.04))]" />
-              <div className="hero-core" aria-hidden="true">
+            <motion.div
+              className="hero-workspace relative flex h-full items-center justify-center overflow-hidden border border-border-light bg-bg"
+              onPointerMove={handleVisualPointerMove}
+              onPointerLeave={resetVisualPointer}
+              style={{ x: visualX, y: visualY, rotateX, rotateY, transformPerspective: 900 }}
+            >
+              <div className="hero-workspace-grid" />
+              <motion.div className="hero-ai-core" animate={reduceMotion ? undefined : { scale: [1, 1.04, 1] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}>
+                <span className="hero-core-halo" />
                 <span className="hero-core-ring hero-core-ring-one" />
                 <span className="hero-core-ring hero-core-ring-two" />
-                <span className="hero-core-orbit hero-core-orbit-one" />
-                <span className="hero-core-orbit hero-core-orbit-two" />
-                <span className="hero-core-node hero-core-node-one" />
-                <span className="hero-core-node hero-core-node-two" />
-                <span className="hero-core-node hero-core-node-three" />
+                <span className="hero-core-label">AI<br /><small>CORE</small></span>
+              </motion.div>
+
+              <motion.div className="hero-orbit hero-orbit-one" animate={reduceMotion ? undefined : { rotate: 360 }} transition={{ duration: 26, repeat: Infinity, ease: 'linear' }}>
+                {orbitTech.slice(0, 3).map((tech) => <TechNode key={tech.label} tech={tech} />)}
+              </motion.div>
+              <motion.div className="hero-orbit hero-orbit-two" animate={reduceMotion ? undefined : { rotate: -360 }} transition={{ duration: 34, repeat: Infinity, ease: 'linear' }}>
+                {orbitTech.slice(3).map((tech) => <TechNode key={tech.label} tech={tech} />)}
+              </motion.div>
+
+              <div className="hero-code hero-code-one"><code>{codeSnippets[0]}</code></div>
+              <div className="hero-code hero-code-two"><code>{codeSnippets[1]}</code></div>
+              <div className="hero-code hero-code-three"><code>{codeSnippets[2]}</code></div>
+              <div className="hero-heatmap" aria-label="GitHub contribution activity">
+                <span className="hero-heatmap-label">GITHUB / ACTIVITY</span>
+                <div className="hero-heatmap-grid">{heatmap.map((level, index) => <i key={index} className={`heat-${level}`} />)}</div>
               </div>
-              <img src={heroMark} alt="Sridhar profile mark" className="relative z-10 w-[58%] max-w-[18rem] object-contain opacity-90" />
-              <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between border-t border-border pt-4">
-                <div><p className="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-accent">Sridhar</p><p className="mt-1 text-sm text-text-muted">Building for what is next</p></div>
-                <span className="font-mono text-xs text-text-muted">01 / 04</span>
-              </div>
+              {!reduceMotion && Array.from({ length: 8 }, (_, index) => (
+                <motion.span
+                  key={index}
+                  className="hero-particle"
+                  style={{ '--particle-index': index }}
+                  animate={{ y: [0, index % 2 ? -12 : 10, 0], opacity: [0.25, 0.75, 0.25] }}
+                  transition={{ duration: 4 + index * 0.45, delay: index * 0.18, repeat: Infinity, ease: 'easeInOut' }}
+                />
+              ))}
               <div className="absolute left-5 top-5 h-10 w-10 border-l border-t border-accent/60" />
               <div className="absolute bottom-5 right-5 h-10 w-10 border-b border-r border-accent-secondary/50" />
-            </div>
-          </motion.div>
-          {floatingCards.map((card, index) => (
-            <motion.div key={card.label} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.72 + index * 0.12, duration: 0.5 }} whileHover={{ y: -6 }} className={`hero-floating-card absolute z-20 border border-border bg-surface/95 p-3 shadow-2xl backdrop-blur-md ${card.className}`}>
-              <div className="flex items-center gap-3"><card.icon size={17} className="text-accent" strokeWidth={1.7} /><div><p className="font-mono text-[0.6rem] uppercase tracking-[0.12em] text-text-muted">{card.label}</p><p className="mt-0.5 text-sm font-semibold text-text">{card.value}</p></div></div>
             </motion.div>
-          ))}
+          </motion.div>
+          <motion.div className="hero-identity-card hero-identity-one" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.72, duration: 0.5 }}>AI Full Stack Developer</motion.div>
+          <motion.div className="hero-identity-card hero-identity-two" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.84, duration: 0.5 }}>Building Real Products</motion.div>
+          <motion.div className="hero-identity-card hero-identity-three" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.96, duration: 0.5 }}><Check size={14} /> Open To Opportunities</motion.div>
         </motion.div>
       </div>
     </section>
   )
+}
+
+function TechNode({ tech }) {
+  return <div className={`hero-tech-node ${tech.className}`}><span>{tech.mark}</span><small>{tech.label}</small></div>
 }
