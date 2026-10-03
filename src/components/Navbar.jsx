@@ -39,9 +39,8 @@ export default function Navbar() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? 'glass shadow-[0_1px_0_rgba(255,255,255,0.04)]' : 'bg-transparent'
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'glass shadow-[0_1px_0_rgba(255,255,255,0.04)]' : 'bg-transparent'
+          }`}
       >
         <div className="container">
           <div className="flex items-center justify-between h-18 lg:h-20">
